@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>心理年龄测试 | 探寻你的内在精神年轮</title>
+    <style>
+        :root {
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1D1D1F;
+            --text-muted: #86868B;
+            --accent: #2C3E50;
+            --accent-light: #EBF1F6;
+            --border: #E5E5EA;
+            --radius-lg: 20px;
+            --radius-sm: 12px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 标题与排版 */
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        /* 引导页 */
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            font-size: 16px;
+            outline: none;
+            transition: var(--transition);
+            background: #FAFAFA;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--accent);
+            background: #fff;
+        }
+
+        .btn {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* 进度条 */
+        .progress-wrapper {
+            margin-bottom: 24px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-bg {
+            height: 4px;
+            background: #EFEFEF;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        /* 答题卡 */
+        .question-title {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            min-height: 52px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            padding: 15px 18px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            font-size: 14px;
+            line-height: 1.4;
+            color: var(--text-main);
+            background: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .option-item:active {
+            background-color: var(--accent-light);
+            border-color: var(--accent);
+            transform: translateX(2px);
+        }
+
+        /* 结果展示 */
+        .result-box {
+            text-align: center;
+        }
+
+        .result-tag {
+            display: inline-block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .age-comparison {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 24px 0;
+            padding: 16px;
+            background: #F8F9FA;
+            border-radius: var(--radius-sm);
+        }
+
+        .age-col {
+            text-align: center;
+        }
+
+        .age-col .val {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .age-col .lab {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .diff-tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            font-weight: 500;
+        }
+
+        .analysis-content {
+            text-align: left;
+            margin-top: 24px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .analysis-sec {
+            margin-bottom: 18px;
+        }
+
+        .analysis-sec h4 {
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .analysis-sec p {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        /* 淡入动画 */
+        .fade-in {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 步骤1：开始页面 -->
+    <div id="intro-card" class="card fade-in">
+        <span class="result-tag" style="display:block; text-align:center;">Psychological Age Index</span>
+        <h1>心理年龄深度测量</h1>
+        <p class="subtitle">通过认知、情绪、社交与成熟度4大维度的30个微观情境，测定你的内核精神年轮。</p>
+        
+        <div class="input-group">
+            <label for="actual-age">请输入您的实际生理年龄（岁）</label>
+            <input type="number" id="actual-age" placeholder="例如：25" min="10" max="100">
+        </div>
+
+        <button class="btn" onclick="startTest()">开始测试 (30题)</button>
+    </div>
+
+    <!-- 步骤2：答题卡 -->
+    <div id="quiz-card" class="card hide">
+        <div class="progress-wrapper">
+            <div class="progress-info">
+                <span>测验进度</span>
+                <span id="progress-text">1 / 30</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+        </div>
+
+        <div class="question-title" id="question-text">加载中...</div>
+
+        <div class="options-list" id="options-container">
+            <!-- 动态注入选项 -->
+        </div>
+    </div>
+
+    <!-- 步骤3：结果报告页 -->
+    <div id="result-card" class="card hide">
+        <div class="result-box">
+            <span class="result-tag">Mental Health Assessment</span>
+            <h1>测验报告单</h1>
+
+            <div class="age-comparison">
+                <div class="age-col">
+                    <div class="val" id="res-actual">0</div>
+                    <div class="lab">生理年龄</div>
+                </div>
+                <div>
+                    <span class="diff-tag" id="res-diff">差值: +0</span>
+                </div>
+                <div class="age-col">
+                    <div class="val" id="res-psy">0</div>
+                    <div class="lab">心理年龄</div>
+                </div>
+            </div>
+
+            <div class="analysis-content">
+                <div class="analysis-sec">
+                    <h4>🌱 内在状态标签</h4>
+                    <p id="res-label">计算中...</p>
+                </div>
+                <div class="analysis-sec">
+                    <h4>🔍 差值深度解析</h4>
+                    <p id="res-diff-desc">计算中...</p>
+                </div>
+                <div class="analysis-sec">
+                    <h4>🧠 心智模式透视</h4>
+                    <p id="res-mindset">计算中...</p>
+                </div>
+                <div class="analysis-sec">
+                    <h4>💡 心理能量建议</h4>
+                    <p id="res-advice">计算中...</p>
+                </div>
+            </div>
+
+            <button class="btn" style="margin-top: 15px;" onclick="restartTest()">重新测验</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 30 道精心设计的心理测验题目
+    // 分值权重: 1分(少年感/童稚), 2分(青春/活力探索), 3分(理性/成熟轻熟), 4分(沧桑/老练通透)
+    const questions = [
+        {
+            q: "1. 面对突如其来的计划变动，你的第一反应往往是？",
+            options: [
+                { t: "非常烦躁甚至想直接放弃整个行程", score: 1 },
+                { t: "觉得有些新鲜，甚至期待未知变化", score: 2 },
+                { t: "迅速评估影响并迅速拟定备选计划B", score: 3 },
+                { t: "波澜不惊，觉得世事本就无常，顺其自然", score: 4 }
+            ]
+        },
+        {
+            q: "2. 周末有一整天空闲时间，你倾向于如何度过？",
+            options: [
+                { t: "打游戏、追动漫或吃零食睡到自然醒", score: 1 },
+                { t: "找朋友打卡网红店或体验新鲜户外运动", score: 2 },
+                { t: "有计划地看书、健身或学习一项技能", score: 3 },
+                { t: "独自泡茶、静坐发呆或整理房间，远离社交", score: 4 }
+            ]
+        },
+        {
+            q: "3. 看到网络上爆火的热门流行网络用语时，你通常：",
+            options: [
+                { t: "瞬间掌握并高频运用于朋友聊天中", score: 1 },
+                { t: "觉得有趣，偶尔在社交软件上玩玩梗", score: 2 },
+                { t: "理解其含义但自己极少使用，觉得有点浮躁", score: 3 },
+                { t: "毫无兴趣甚至觉得有些无聊和反感", score: 4 }
+            ]
+        },
+        {
+            q: "4. 当你在人际关系中被他人误解时，你更倾向于：",
+            options: [
+                { t: "委屈难受，迫切想要找对方当面争论清楚", score: 1 },
+                { t: "向闺蜜或死党疯狂吐槽来排解不适感", score: 2 },
+                { t: "梳理事实，理性沟通一次，若不行则保持边界", score: 3 },
+                { t: "沉默以对，懂的人自然懂，无需多费口舌", score: 4 }
+            ]
+        },
+        {
+            q: "5. 你对于“身体健康”与“养生”话题的态度是：",
+            options: [
+                { t: "完全不在意，自恃年轻，熬夜通宵常态化", score: 1 },
+                { t: "一边放肆熬夜，一边保温杯泡枸杞自我安慰", score: 2 },
+                { t: "开始规律作息，按时体检，注重饮食平衡", score: 3 },
+                { t: "将身心健康作为第一顺位，甚至热衷研究养生经络", score: 4 }
+            ]
+        },
+        {
+            q: "6. 在消费观念上，下列哪种描述最符合你现在的状态？",
+            options: [
+                { t: "经常冲动消费，喜欢可爱或颜值高的无用好物", score: 1 },
+                { t: "注重当下体验感，愿意为情绪价值和旅行买单", score: 2 },
+                { t: "重视性价比与实用性，有强制储蓄和理财规划", score: 3 },
+                { t: "物欲极低，更倾向极简生活，不愿被物质绑架", score: 4 }
+            ]
+        },
+        {
+            q: "7. 面对自己曾经犯下的愚蠢错误或遗憾，你现在的心理感受是：",
+            options: [
+                { t: "反复懊恼自责，时常陷入精神内耗", score: 1 },
+                { t: "偶尔有些不甘心，希望有“时光倒流”的魔法", score: 2 },
+                { t: "总结复盘经验教训，提醒自己不再犯同类错误", score: 3 },
+                { t: "全然接纳，认为一切发生皆有利于我，是必然注定", score: 4 }
+            ]
+        },
+        {
+            q: "8. 朋友圈/社交媒体动态对你而言意味着什么？",
+            options: [
+                { t: "展示自我的秀场，非常在意点赞数和评论反馈", score: 1 },
+                { t: "分享日常生活的相册，喜欢记录生活碎片", score: 2 },
+                { t: "设置了仅三天可见或极少发布，多用于工作联络", score: 3 },
+                { t: "基本处于停更状态，只看少数有价值的信息或彻底远离", score: 4 }
+            ]
+        },
+        {
+            q: "9. 假如你的好朋友突然取得了巨大的世俗成功，你的真实感受更偏向：",
+            options: [
+                { t: "羡慕中夹杂着嫉妒，甚至会产生轻微的自卑与失落", score: 1 },
+                { t: "替朋友高兴，并以此作为激励自己奋斗的动力", score: 2 },
+                { t: "真诚祝福，同时清醒认知到彼此不同的发展路径", score: 3 },
+                { t: "内心毫无波澜，看淡世俗名利，各有各的缘法", score: 4 }
+            ]
+        },
+        {
+            q: "10. 你对“孤独”这种状态的体验是：",
+            options: [
+                { t: "极其害怕独处，一个人时会感到莫名的空虚恐慌", score: 1 },
+                { t: "需要热闹也需要独处，二者交替才能保持平衡", score: 2 },
+                { t: "享受独处，认为独处是高效思考与充电的最佳时机", score: 3 },
+                { t: "孤独是人生的底色，在独处中能获得极度平静", score: 4 }
+            ]
+        },
+        {
+            q: "11. 挑选衣服穿搭时，你的核心考量标准是：",
+            options: [
+                { t: "追求潮流个性，一定要吸睛且与众不同", score: 1 },
+                { t: "偏爱修身时尚，喜欢展现个人审美与青春气息", score: 2 },
+                { t: "注重得体、质感与实用性，以大方舒适为主", score: 3 },
+                { t: "纯棉、宽松、绝对舒适，甚至几件基础款穿四季", score: 4 }
+            ]
+        },
+        {
+            q: "12. 面对工作中枯燥重复的任务，你内心的态度通常是：",
+            options: [
+                { t: "抓狂抗拒，能拖延就拖延，摸鱼应付了事", score: 1 },
+                { t: "虽然抱怨两句，但还是会想办法尽快做完去玩", score: 2 },
+                { t: "寻找流程优化的可能，将其视为职业基本素养", score: 3 },
+                { t: "如如不动，当成一种心性磨练，心静自然顺遂", score: 4 }
+            ]
+        },
+        {
+            q: "13. 你怎么看待父母或长辈的唠叨与观念差异？",
+            options: [
+                { t: "直接回怼抗拒，觉得他们完全不可理喻与落伍", score: 1 },
+                { t: "虽然敷衍应和，但心里依旧坚持我行我素", score: 2 },
+                { t: "理解他们的时代局限性，学会了温和地确立边界", score: 3 },
+                { t: "心怀慈悲与心疼，包容他们所有的不完美与唠叨", score: 4 }
+            ]
+        },
+        {
+            q: "14. 面对一段消耗你能量的情感关系，你会如何处理？",
+            options: [
+                { t: "分分合合，纠缠不清，舍不得过去的付出", score: 1 },
+                { t: "痛苦挣扎很久，等待对方先提出或者找朋友倾诉支招", score: 2 },
+                { t: "理性权衡后及时止损，即使痛苦也会果断抽离", score: 3 },
+                { t: "无需刻意决裂，自然而然地淡出对方生活，不留执念", score: 4 }
+            ]
+        },
+        {
+            q: "15. 你对未来的理想生活愿景更接近于：",
+            options: [
+                { t: "赚大钱、环游世界、成为受人瞩目的主角", score: 1 },
+                { t: "事业有所成就，生活精彩充实，体验丰富人生", score: 2 },
+                { t: "家庭和睦，财务稳健，拥有可控的生活节奏", score: 3 },
+                { t: "采菊东篱下，身心安宁，无灾无难过此一生", score: 4 }
+            ]
+        },
+        {
+            q: "16. 听音乐时，你现在的播放列表特点是：",
+            options: [
+                { t: "当下榜单最火的新歌、电音或节奏感极强的曲风", score: 1 },
+                { t: "流行、独立摇滚，喜欢不断收藏新发现的冷门单曲", score: 2 },
+                { t: "固定听自己黄金时期（高中大学）的老歌，很少更新", score: 3 },
+                { t: "纯音乐、轻音乐、古典或自然白噪音", score: 4 }
+            ]
+        },
+        {
+            q: "17. 当别人对你提出严厉的批评建议时：",
+            options: [
+                { t: "第一反应是恼羞成怒或感到被全盘否定", score: 1 },
+                { t: "表面虽虚心接受，内心还是有点不服气", score: 2 },
+                { t: "剥离情绪成分，客观评估对方说的有无道理", score: 3 },
+                { t: "闻过则喜，甚至感谢对方帮自己发现了盲区", score: 4 }
+            ]
+        },
+        {
+            q: "18. 你在与陌生人社交时的状态是：",
+            options: [
+                { t: "要么过分拘谨害怕，要么人来疯自来熟", score: 1 },
+                { t: "主动破冰，喜欢认识新朋友拓展自己的圈子", score: 2 },
+                { t: "进退有度，保持礼貌距离，不刻意逢迎", score: 3 },
+                { t: "感到极度疲惫，若无必要绝不参与任何无效社交", score: 4 }
+            ]
+        },
+        {
+            q: "19. 你对“死亡”或“衰老”话题的心理感受是：",
+            options: [
+                { t: "觉得离自己极其遥远，不愿去想也不敢直面", score: 1 },
+                { t: "偶尔看到白发或长辈衰老会产生短暂的恐慌", score: 2 },
+                { t: "视其为自然规律，提醒自己趁早做好规划与准备", score: 3 },
+                { t: "向死而生，对生命的终点持超脱甚至释怀态度", score: 4 }
+            ]
+        },
+        {
+            q: "20. 你对“成功”一词的定义更偏向：",
+            options: [
+                { t: "豪车名表、万众敬仰与极高的社会地位", score: 1 },
+                { t: "实现自我潜能，成为自己专业领域的佼佼者", score: 2 },
+                { t: "拥有掌控自己时间的能力，家人身心健康", score: 3 },
+                { t: "内心平和，无愧于心，不被世俗价值观所裹挟", score: 4 }
+            ]
+        },
+        {
+            q: "21. 遇到非常讨厌的人在身边炫耀时，你会：",
+            options: [
+                { t: "忍不住当场阴阳怪气反讽几句", score: 1 },
+                { t: "私下跟信赖的朋友翻白眼模仿吐槽", score: 2 },
+                { t: "看破不说破，礼貌微笑然后借故离开", score: 3 },
+                { t: "内心完全不起波澜，视其如空气或跳梁小丑", score: 4 }
+            ]
+        },
+        {
+            q: "22. 你的情绪稳定程度通常表现为：",
+            options: [
+                { t: "喜怒无常，容易被外界的一点小事点燃或摧毁", score: 1 },
+                { t: "大起大落较快，脾气来得快去得也快", score: 2 },
+                { t: "有较强的情绪觉察力，能迅速自我调节至中性", score: 3 },
+                { t: "深水无澜，极少有能引起自己情绪剧烈波动的事", score: 4 }
+            ]
+        },
+        {
+            q: "23. 对于童年时代的梦想，你现在的想法是：",
+            options: [
+                { t: "依然执着甚至常常为未实现它而感到遗憾痛苦", score: 1 },
+                { t: "换了一种形式将热爱保留在自己的业余爱好里", score: 2 },
+                { t: "早已现实化，认识到平凡也是一种常态", score: 3 },
+                { t: "相逢一笑，那不过是人生特定阶段的浪漫泡影", score: 4 }
+            ]
+        },
+        {
+            q: "24. 如果现在给你一笔不菲的意外之财，你首选用途是：",
+            options: [
+                { t: "疯狂拔草一直想要的大牌奢侈品或数码全家桶", score: 1 },
+                { t: "来一场说走就走的环球深度旅行体验生活", score: 2 },
+                { t: "稳健存入银行理财或提前偿还房贷等硬负债", score: 3 },
+                { t: "做一些慈善捐助或作为家族抵御未来风险的基金", score: 4 }
+            ]
+        },
+        {
+            q: "25. 你如何看待“吃亏”这件事情？",
+            options: [
+                { t: "绝对不能吃亏！哪怕一分钱、一句话都要争回来", score: 1 },
+                { t: "小亏无所谓，但原则性吃亏必须讨个说法", score: 2 },
+                { t: "吃亏是福算不上，但往往是辨别人心的试金石", score: 3 },
+                { t: "因果自负，吃亏往往是消灾化难，欣然接受", score: 4 }
+            ]
+        },
+        {
+            q: "26. 阅读长篇文字或深度书籍时，你的专注程度是：",
+            options: [
+                { t: "根本静不下心，超过1分钟的文字就想划走看短视频", score: 1 },
+                { t: "需要特定的安静环境才能勉强看进去一部分", score: 2 },
+                { t: "有稳定的深度阅读习惯，能定期读完一本书", score: 3 },
+                { t: "享受长文与经典的文字厚度，视其为一种心灵冥想", score: 4 }
+            ]
+        },
+        {
+            q: "27. 你对“规则”与“传统秩序”的看法是：",
+            options: [
+                { t: "叛逆抗拒，觉得一切条条框框都是为了限制自由", score: 1 },
+                { t: "在规则的边缘试探，寻找属于自己的灵活空间", score: 2 },
+                { t: "敬畏规则，懂得在既定规则下将效益最大化", score: 3 },
+                { t: "深谙规则背后的底层人性博弈，游刃有余但心存悲悯", score: 4 }
+            ]
+        },
+        {
+            q: "28. 在一段恋爱关系中，你更看重对方的：",
+            options: [
+                { t: "长相身材是否养眼、是否会浪漫体贴哄我开心", score: 1 },
+                { t: "是否有共同语言和兴趣，玩不玩得来", score: 2 },
+                { t: "三观是否契合、情绪是否稳定、是否有责任感", score: 3 },
+                { t: "灵魂是否同频、是否能在人生低谷时互相托底", score: 4 }
+            ]
+        },
+        {
+            q: "29. 每天早晨醒来，你通常的第一心境是：",
+            options: [
+                { t: "万般痛苦赖床，恨不得辞职退学逃离现实", score: 1 },
+                { t: "有些困倦，但很快被手机消息和日程推着出发", score: 2 },
+                { t: "大脑清晰，井井有条地开启洗漱与工作准备", score: 3 },
+                { t: "感恩又迎来新的一天，内心平静祥和", score: 4 }
+            ]
+        },
+        {
+            q: "30. 假如有来生，你对生命的态度更接近：",
+            options: [
+                { t: "一定要含着金钥匙出生，过极度奢华潇洒的人生", score: 1 },
+                { t: "还想体验更多未曾体验过的新奇事物与刺激探险", score: 2 },
+                { t: "做个普通但通透的人，好好陪伴所爱之人", score: 3 },
+                { t: "若能不再入轮回受苦，归于宇宙虚无便是最好", score: 4 }
+            ]
+        }
+    ];
+
+    let currentQuestionIdx = 0;
+    let userActualAge = 25;
+    let userTotalScore = 0;
+
+    function startTest() {
+        const ageInput = document.getElementById('actual-age').value;
+        if (!ageInput || ageInput < 8 || ageInput > 110) {
+            alert("请输入有效的生理年龄（8 - 110岁）");
+            return;
+        }
+        userActualAge = parseInt(ageInput, 10);
+        userTotalScore = 0;
+        currentQuestionIdx = 0;
+
+        document.getElementById('intro-card').classList.add('hide');
+        document.getElementById('quiz-card').classList.remove('hide');
+        document.getElementById('quiz-card').classList.add('fade-in');
+
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const qData = questions[currentQuestionIdx];
+        const progressPercent = ((currentQuestionIdx + 1) / questions.length) * 100;
+
+        document.getElementById('progress-text').innerText = `${currentQuestionIdx + 1} / ${questions.length}`;
+        document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+        document.getElementById('question-text').innerText = qData.q;
+
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+
+        qData.options.forEach((opt, idx) => {
+            const btn = document.createElement('div');
+            btn.className = 'option-item';
+            btn.innerHTML = `<span>${String.fromCharCode(65 + idx)}. ${opt.t}</span>`;
+            btn.onclick = () => selectOption(opt.score);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(score) {
+        userTotalScore += score;
+        currentQuestionIdx++;
+
+        if (currentQuestionIdx < questions.length) {
+            renderQuestion();
+        } else {
+            calculateAndShowResult();
+        }
+    }
+
+    function calculateAndShowResult() {
+        document.getElementById('quiz-card').classList.add('hide');
+        const resCard = document.getElementById('result-card');
+        resCard.classList.remove('hide');
+        resCard.classList.add('fade-in');
+
+        // 30题总分区间：30分 - 120分
+        // 映射心理年龄基准：大约 14岁 ~ 68岁
+        // 算法：心理年龄 = 14 + ((总分 - 30) / 90) * 54
+        let mentalAge = Math.round(14 + ((userTotalScore - 30) / 90) * 54);
+        let diff = mentalAge - userActualAge;
+
+        document.getElementById('res-actual').innerText = userActualAge;
+        document.getElementById('res-psy').innerText = mentalAge;
+        
+        let diffText = diff > 0 ? `差值: +${diff} 岁 (超前)` : (diff < 0 ? `差值: ${diff} 岁 (滞后)` : `差值: 0 岁 (同步)`);
+        document.getElementById('res-diff').innerText = diffText;
+
+        // 深度性格画像生成
+        let label = "";
+        let diffDesc = "";
+        let mindset = "";
+        let advice = "";
+
+        if (diff <= -8) {
+            label = "【赤子孩童 · 灵性反叛型】";
+            diffDesc = `你的心理年龄比生理年龄小 ${Math.abs(diff)} 岁。你依然保有未被世俗规训的童真与锐气。你抗拒成人的圆滑假面，渴望真诚纯粹的人际关系。但过大的负差值可能也映射出你潜意识里对承担“成人沉重责任”的防御性逃避。`;
+            mindset = "以好奇心驱动一切，容易感情用事。直觉极其敏锐，富有想象力和艺术感知力，但在面对持久的枯燥琐事时耐受度偏弱。";
+            advice = "保持这份罕见的少年感，它是你的天赋所在；但同时请学会在关键现实事务上建立秩序感，为自己的童心筑一道铠甲。";
+        } else if (diff >= -7 && diff <= -3) {
+            label = "【轻熟活力 · 理想主义探索者】";
+            diffDesc = `你的心理年龄比生理年龄年轻 ${Math.abs(diff)} 岁。这是一种极具魅力的黄金平衡状态：你既具备应对现实的基本能力，又未曾被生活磨去眼里的光芒。面对新事物，你依然充满探索欲。`;
+            mindset = "思维富有弹性，不会画地为牢。懂得在社会规则与个人喜好之间寻找夹缝，活得轻盈且松弛。";
+            advice = "继续维持这种高能量的生命状态。在适当时刻，可以尝试更有挑战性的长周期目标，将活力转化为持久的成就感。";
+        } else if (diff >= -2 && diff <= 2) {
+            label = "【知行合一 · 身心高度同步型】";
+            diffDesc = `你的心理年龄与生理年龄惊人地一致（差值仅 ${diff} 岁）。这意味着你在人生的每一个阶段都恰到好处地体验了该有的领悟，既不拔苗助长，也不驻足逃避，身心节律十分协调。`;
+            mindset = "情绪平衡稳健，现实感极强。能够清醒接纳自己的局限，也能稳步向自己的现实目标推进，内耗相对极低。";
+            advice = "你拥有最健康的自我接纳度。偶尔允许自己任性一点或冒险一次，生命不仅需要秩序，也需要小小的惊喜与偏轨。";
+        } else if (diff >= 3 && diff <= 7) {
+            label = "【沉稳老练 · 理性锚定者】";
+            diffDesc = `你的心理年龄比生理年龄大 ${diff} 岁。同龄人在你眼里常常显得有些幼稚。你过早地看透了许多人情世故，习惯于未雨绸缪，做任何选择都带着审慎的利弊权衡。`;
+            mindset = "理性优先于感性，极少感情用事。你擅长风险控制和自我管理，是周围人眼中靠谱、值得信赖的定海神针。";
+            advice = "过度成熟有时是缺乏安全感的表现。尝试卸下一部分紧绷的防御心，偶尔“不成熟”一次，不会引起世界坍塌。";
+        } else {
+            label = "【古老灵魂 · 沧桑通透沉淀者】";
+            diffDesc = `你的心理年龄比生理年龄大了 ${diff} 岁之多。你的内在住着一个看尽人世浮沉的老者。你对名利争夺感到厌倦，物欲低迷，内心常有一种超然物外的疏离感与疲惫感。`;
+            mindset = "通透但略带虚无主义色彩。对人际冲突毫无兴致，看淡一切关系与成败，追求绝对的精神清净与内在秩序。";
+            advice = "通透是智慧，但警惕变成“精神早衰”。请重新尝试与当下具象的生活建立联结，哪怕只是一顿热腾腾的美食、一次流汗的奔跑，找回肉身的生命热度。";
+        }
+
+        document.getElementById('res-label').innerText = label;
+        document.getElementById('res-diff-desc').innerText = diffDesc;
+        document.getElementById('res-mindset').innerText = mindset;
+        document.getElementById('res-advice').innerText = advice;
+    }
+
+    function restartTest() {
+        document.getElementById('result-card').classList.add('hide');
+        document.getElementById('intro-card').classList.remove('hide');
+        document.getElementById('intro-card').classList.add('fade-in');
+        document.getElementById('actual-age').value = '';
+    }
+</script>
+
+</body>
+</html>
